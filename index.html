@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Styles Électro</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#6c3df5">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Styles Électro">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="icon" href="icon-192.png">
+<style>
+:root{--bg:#f6f5fb;--card:#fff;--tx:#1b1a24;--mut:#6b6a7a;--ac:#6c3df5;--bar:#e6e2f8;--bd:#e3e1ee;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#13121a;--card:#1d1c28;--tx:#efeefa;--mut:#9f9db3;--ac:#9a78ff;--bar:#2c2a40;--bd:#2d2b3d}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,Segoe UI,sans-serif}
+main{max-width:760px;margin:0 auto;padding:20px 16px 40px}
+h1{margin:0 0 4px;font-size:1.6rem}
+.sub{color:var(--mut);margin:0 0 16px;font-size:.9rem}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+input,select{flex:1;min-width:140px;padding:10px 12px;border-radius:10px;border:1px solid var(--bd);background:var(--card);color:var(--tx);font-size:1rem}
+.item{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:12px 14px;margin-bottom:10px;cursor:pointer}
+.row{display:flex;align-items:center;gap:12px}
+.rk{font-weight:700;font-size:1.2rem;color:var(--ac);width:34px;text-align:center}
+.nm{font-weight:600}
+.meta{color:var(--mut);font-size:.8rem}
+.bar{height:8px;border-radius:99px;background:var(--bar);margin-top:6px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ac);border-radius:99px}
+.grow{flex:1}
+.sc{font-size:.85rem;color:var(--mut);min-width:34px;text-align:right}
+.det{display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--bd);font-size:.9rem;line-height:1.5}
+.item.open .det{display:block}
+.seq{margin-top:12px}.ctl{display:flex;gap:10px;align-items:center;margin-bottom:8px;font-size:.85rem;color:var(--mut)}.ctl button{padding:8px 14px;border:0;border-radius:10px;background:var(--ac);color:#fff;font-size:.95rem;cursor:pointer}.ctl .bp{flex:none;min-width:0;width:70px;padding:6px}.tr{display:grid;grid-template-columns:54px repeat(16,1fr);gap:2px;margin-bottom:3px;align-items:center}.tr span{font-size:.75rem;color:var(--mut)}.c{height:24px;border-radius:4px;background:var(--bar);cursor:pointer}.c.b{background:var(--bd)}.c.a{background:var(--ac)}.c.now{outline:2px solid var(--tx);outline-offset:-2px}.hint{font-size:.75rem;color:var(--mut);margin-top:6px}
+.ctl{flex-wrap:wrap}.ctl .sw{flex:none;min-width:0;width:90px;padding:0}.tr span.mu{cursor:pointer}.tr span.off{opacity:.35;text-decoration:line-through}.ah{font-weight:600;font-size:.9rem;margin-top:14px}.ar{display:grid;gap:2px;margin-top:6px}.ar .h{font-size:.6rem;color:var(--mut);text-align:center;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.ar .c{cursor:default}.ar .h.cur{color:var(--tx);font-weight:700}.ar .c.cur{outline:2px solid var(--tx);outline-offset:-2px}
+.none{color:var(--mut);text-align:center;padding:20px}
+.note{color:var(--mut);font-size:.75rem;margin-top:16px}
+</style>
+</head>
+<body>
+<main>
+<h1>Top 20 des styles électro</h1>
+<p class="sub">Classés par popularité. Clique sur un style pour les détails.</p>
+<div class="tools">
+<input id="q" type="search" placeholder="Rechercher un style ou un artiste…">
+<select id="s">
+<option value="pop">Tri : popularité</option>
+<option value="az">Tri : A → Z</option>
+<option value="bpm">Tri : BPM croissant</option>
+<option value="year">Tri : année d'origine</option>
+</select>
+</div>
+<div id="list"></div>
+<p class="note">Classement indicatif, basé sur l'audience globale (streaming, festivals, notoriété). Ce n'est pas une mesure officielle.</p>
+</main>
+<script>
+var D=[
+["House","120–130",1985,"Chicago","Rythme 4/4 chaud et dansant, basses rondes, voix soul.","Frankie Knuckles, Daft Punk, David Guetta",100],
+["Techno","125–150",1985,"Détroit","Répétitif, mécanique et hypnotique, né dans les clubs.","Jeff Mills, Carl Cox, Charlotte de Witte",96],
+["EDM / Big Room","126–130",2010,"USA / Europe","Gros drops de festival, très mainstream.","Martin Garrix, Hardwell, Calvin Harris",94],
+["Trance","132–142",1992,"Allemagne","Mélodies planantes, montées longues et émotion.","Armin van Buuren, Paul van Dyk, Tiësto",88],
+["Drum and Bass","170–180",1993,"Royaume-Uni","Breakbeats ultra rapides avec grosses basses.","Chase & Status, Pendulum, Noisia",85],
+["Dubstep","138–142",2000,"Londres","Basses lourdes, wobbles et rythme demi-tempo.","Skrillex, Excision, Skream",82],
+["Deep House","118–125",1988,"Chicago","Version plus douce et jazzy de la house.","Lane 8, Kerri Chandler, Disclosure",79],
+["Progressive House","120–128",1992,"Royaume-Uni","Construction lente, ambiance planante.","Eric Prydz, Deadmau5, Swedish House Mafia",76],
+["Tech House","124–130",1995,"Europe","Mélange de groove house et de rythmiques techno.","Fisher, Chris Lake, Green Velvet",74],
+["Future Bass","140–160",2013,"Internet","Synthés colorés, accords riches, très mélodique.","Flume, Illenium, San Holo",71],
+["Electro House","126–132",2005,"France / USA","Basses saturées et sons agressifs.","Justice, Skrillex, Afrojack",68],
+["Synthwave","80–118",2005,"France / USA","Nostalgie des années 80, synthés rétro.","Kavinsky, The Midnight, Perturbator",65],
+["Downtempo / Chillout","80–110",1990,"Royaume-Uni","Ambiances lentes et relaxantes.","Bonobo, Thievery Corporation, Air",62],
+["Hardstyle","150–160",2000,"Pays-Bas","Kicks distordus et mélodies épiques.","Headhunterz, Angerfist, Brennan Heart",58],
+["Ambient","60–90",1978,"Royaume-Uni","Textures planantes, sans rythme marqué.","Brian Eno, Aphex Twin, Tycho",55],
+["UK Garage","130–135",1995,"Londres","Rythmes syncopés et voix soul.","Craig David, MJ Cole, Burial",51],
+["Breakbeat","120–140",1988,"Royaume-Uni","Rythmes cassés, très funky.","The Prodigy, Chemical Brothers, Fatboy Slim",48],
+["Psytrance","138–150",1993,"Goa / Israël","Trance hypnotique et psychédélique.","Infected Mushroom, Astrix, Vini Vici",44],
+["Hardcore / Gabber","160–200",1991,"Pays-Bas","Très rapide et très violent.","Rotterdam Terror Corps, Angerfist, Dr. Peacock",38],
+["IDM","90–170",1992,"Royaume-Uni","Électro expérimentale, rythmes complexes.","Autechre, Aphex Twin, Boards of Canada",32]
+];
+var list=document.getElementById('list'),q=document.getElementById('q'),s=document.getElementById('s'),open={};
+function bpmMin(d){return parseInt(d[1],10)}
+function render(){
+var t=q.value.toLowerCase().trim();
+var rows=D.map(function(d,i){return{d:d,r:i+1}}).filter(function(x){return(x.d[0]+" "+x.d[5]+" "+x.d[4]).toLowerCase().indexOf(t)>-1});
+var m=s.value;
+if(m==="az")rows.sort(function(a,b){return a.d[0].localeCompare(b.d[0])});
+if(m==="bpm")rows.sort(function(a,b){return bpmMin(a.d)-bpmMin(b.d)});
+if(m==="year")rows.sort(function(a,b){return a.d[2]-b.d[2]});
+stop();list.innerHTML="";
+if(!rows.length){list.innerHTML='<div class="none">Aucun résultat.</div>';return}
+rows.forEach(function(x){
+var d=x.d,el=document.createElement('div');
+el.className='item'+(open[d[0]]?' open':'');
+el.innerHTML='<div class="row"><div class="rk">'+x.r+'</div><div class="grow"><div class="nm">'+d[0]+'</div><div class="meta">'+d[1]+' BPM · '+d[2]+' · '+d[3]+'</div><div class="bar"><i style="width:'+d[6]+'%"></i></div></div><div class="sc">'+d[6]+'</div></div><div class="det">'+d[4]+'<br><span class="meta">Artistes : '+d[5]+'</span><div class="seq"></div></div>';
+el.onclick=function(e){if(e.target.closest('.seq'))return;open[d[0]]=!open[d[0]];el.classList.toggle('open')};
+seq(el.querySelector('.seq'),d[0]);list.appendChild(el)});
+}
+var P={"House":"x...x...x...x...|....x.......x...|..x...x...x...x.|..x...x...x...x.|124","Techno":"x...x...x...x...|....x.......x...|..x...x...x...x.|.x.x.x.x.x.x.x.x|135","EDM / Big Room":"x...x...x...x...|....x.......x...|..x...x...x...x.|x.x.x.x.x.x.x.x.|128","Trance":"x...x...x...x...|....x.......x...|x.x.x.x.x.x.x.x.|..x...x...x...x.|138","Drum and Bass":"x.........x.....|....x.......x...|x.x.x.x.x.x.x.x.|x.....x..x......|174","Dubstep":"x.........x.....|........x.......|x.x.x.x.x.x.x.x.|x.......x.x.....|140","Deep House":"x...x...x...x...|....x.......x...|..x...x...x...x.|x..x..x..x..x..x|120","Progressive House":"x...x...x...x...|....x.......x...|..x...x...x...x.|.x.x.x.x.x.x.x.x|126","Tech House":"x...x...x...x...|....x.......x...|.x.xx.x..x.xx.x.|x..x..x.x..x..x.|126","Future Bass":"x.....x...x.....|....x.......x...|x.x.x.x.x.x.x.x.|x...x...x...x...|150","Electro House":"x...x...x...x...|....x.......x...|..x...x...x...x.|xx.xx.xx.xx.xx.x|128","Synthwave":"x...x...x...x...|....x.......x...|x.x.x.x.x.x.x.x.|x.x.x.x.x.x.x.x.|100","Downtempo / Chillout":"x.......x.x.....|....x.......x...|x.x.x.x.x.x.x.x.|x.......x.......|95","Hardstyle":"x...x...x...x...|....x.......x...|..x...x...x...x.|.xxx.xxx.xxx.xxx|150","Ambient":"x...............|................|........x.......|x.......x.......|70","UK Garage":"x.....x...x.....|....x.......x...|..x..x..x..x..x.|x.....x.....x...|132","Breakbeat":"x.....x..x......|....x.......x...|x.x.x.x.x.x.x.x.|x.....x..x......|130","Psytrance":"x...x...x...x...|....x.......x...|..x...x...x...x.|.xxx.xxx.xxx.xxx|145","Hardcore / Gabber":"x...x...x...x...|....x.......x...|..x...x...x...x.|..x...x...x...x.|180","IDM":"x..x....x.x...x.|....x..x....x...|x.xx.x.xx.x.xx.x|x.....x...x..x..|120"};
+var S={},ac,nb,cur=null,TN=["Kick","Snare","Hi-hat","Basse"];
+function actx(){if(!ac){ac=new(window.AudioContext||window.webkitAudioContext)();nb=ac.createBuffer(1,ac.sampleRate*.3,ac.sampleRate);var a=nb.getChannelData(0);for(var i=0;i<a.length;i++)a[i]=Math.random()*2-1}if(ac.state==="suspended")ac.resume();return ac}
+function hit(c,t,k){var g=c.createGain(),o,f;g.connect(c.destination);
+if(k===0){o=c.createOscillator();o.frequency.setValueAtTime(150,t);o.frequency.exponentialRampToValueAtTime(45,t+.12);g.gain.setValueAtTime(1,t);g.gain.exponentialRampToValueAtTime(.001,t+.3);o.connect(g);o.start(t);o.stop(t+.32)}
+else if(k===3){o=c.createOscillator();f=c.createBiquadFilter();o.type="sawtooth";o.frequency.value=55;f.type="lowpass";f.frequency.value=400;g.gain.setValueAtTime(.5,t);g.gain.exponentialRampToValueAtTime(.001,t+.22);o.connect(f);f.connect(g);o.start(t);o.stop(t+.24)}
+else{var n=c.createBufferSource(),d=k===1?.18:.05;f=c.createBiquadFilter();n.buffer=nb;f.type="highpass";f.frequency.value=k===1?1500:7000;g.gain.setValueAtTime(k===1?.6:.25,t);g.gain.exponentialRampToValueAtTime(.001,t+d);n.connect(f);f.connect(g);n.start(t);n.stop(t+d+.02)}}
+function stop(){if(cur){clearInterval(cur.iv);cur.btn.textContent="▶ Lecture";cur.mark(-1);cur=null}}
+function seq(box,name){var p=P[name].split("|");
+var st=S[name]||(S[name]={bpm:+p[4],g:[0,1,2,3].map(function(i){return p[i].split("").map(function(c){return c==="x"})})});
+box.innerHTML='<div class="ctl"><button class="pl">▶ Lecture</button><label>BPM <input class="bp" type="number" min="60" max="200"></label></div><div class="gr"></div><div class="hint">Clique sur les cases pour changer le rythme.</div>';
+var btn=box.querySelector('.pl'),bp=box.querySelector('.bp'),gr=box.querySelector('.gr'),cs=[];
+bp.value=st.bpm;bp.oninput=function(){var v=+bp.value;if(v>=60&&v<=200)st.bpm=v};
+TN.forEach(function(n,t){var r=document.createElement('div');r.className='tr';r.innerHTML='<span>'+n+'</span>';cs[t]=[];
+for(var i=0;i<16;i++)(function(i){var c=document.createElement('div');c.className='c'+(i%4===0?' b':'')+(st.g[t][i]?' a':'');
+c.onclick=function(){st.g[t][i]=!st.g[t][i];c.classList.toggle('a')};cs[t][i]=c;r.appendChild(c)})(i);gr.appendChild(r)});
+function mark(s){cs.forEach(function(row){row.forEach(function(c,i){c.classList.toggle('now',i===s)})})}
+btn.onclick=function(){if(cur&&cur.btn===btn){stop();return}stop();var c=actx(),step=0,next=c.currentTime+.05;
+btn.textContent="■ Stop";
+cur={btn:btn,mark:mark,iv:setInterval(function(){while(next<c.currentTime+.12){(function(s,t){for(var k=0;k<4;k++)if(st.g[k][s])hit(c,t,k);setTimeout(function(){if(cur&&cur.btn===btn)mark(s)},Math.max(0,(t-c.currentTime)*1000))})(step,next);step=(step+1)%16;next+=60/st.bpm/4}},25)}}}
+var SOFT={"Ambient":1,"Downtempo / Chillout":1,"Synthwave":1,"IDM":1},CUT={"Dubstep":1,"Drum and Bass":1,"EDM / Big Room":1,"Future Bass":1,"Hardstyle":1,"Electro House":1};
+var A1=[["Intro",8,[1,0,1,0]],["Montée",8,[1,1,1,0],1],["Drop",16,[1,1,1,1]],["Break",8,[0,0,1,1]],["Drop 2",16,[1,1,1,1]],["Outro",8,[1,0,1,0]]];
+var A2=[["Intro",8,[0,0,1,1]],["Thème",16,[1,1,1,1]],["Variation",16,[1,0,1,1]],["Retour",16,[1,1,1,1]],["Outro",8,[0,0,1,1]]];
+function stop(){if(cur){clearInterval(cur.iv);cur.btn.textContent=cur.lbl;cur.mark(-1,-1);cur=null}}
+function run(btn,lbl,mark,st,get){if(cur&&cur.btn===btn){stop();return}stop();var c=actx(),n=0,next=c.currentTime+.05;btn.textContent="■ Stop";
+cur={btn:btn,lbl:lbl,mark:mark,iv:setInterval(function(){while(next<c.currentTime+.12){var x=get(n);if(!x){stop();return}var sd=60/st.bpm/4,t=next+(x.s%2?st.sw/100*sd/3:0);
+(function(x,t){for(var k=0;k<4;k++)if(x.h[k]&&!st.m[k])hit(c,t,k);setTimeout(function(){if(cur&&cur.btn===btn)mark(x.s,x.sec)},Math.max(0,(t-c.currentTime)*1000))})(x,t);n++;next+=sd}},25)}}
+function vl(v){var b=[v&127];while(v>>=7)b.unshift((v&127)|128);return b}
+function midi(st){var ev=[],b,i,k,bars=4;
+for(b=0;b<bars;b++)for(i=0;i<16;i++)for(k=0;k<4;k++)if(st.g[k][i]&&!st.m[k]){var t=(b*16+i)*120+(i%2?Math.round(st.sw/100*40):0),ch=k===3?0:9,nt=[36,38,42,33][k];ev.push([t,0x90|ch,nt,k===3?90:100],[t+(k===3?100:50),0x80|ch,nt,0])}
+ev.sort(function(a,c){return a[0]-c[0]});
+var mp=Math.round(6e7/st.bpm),tr=[0,255,81,3,(mp>>16)&255,(mp>>8)&255,mp&255],last=0;
+ev.forEach(function(e){tr=tr.concat(vl(e[0]-last),[e[1],e[2],e[3]]);last=e[0]});
+tr=tr.concat(vl(Math.max(0,bars*1920-last)),[255,47,0]);
+var L=tr.length;return new Uint8Array([77,84,104,100,0,0,0,6,0,0,0,1,1,224,77,84,114,107,(L>>24)&255,(L>>16)&255,(L>>8)&255,L&255].concat(tr))}
+function dl(){return Promise.resolve({save:function(r){var a=document.createElement("a");a.href=URL.createObjectURL(r.data);a.download=r.filename;document.body.appendChild(a);a.click();a.remove();return Promise.resolve()}})}
+function slug(n){return n.replace(/[^a-z0-9]+/gi,"-").toLowerCase()}
+function exp(name,st){dl().then(function(m){return m.save({filename:slug(name)+"-"+st.bpm+"bpm.mid",data:new Blob([midi(st)],{type:"audio/midi"})})})}
+var LONG={"Techno":1,"Tech House":1,"Deep House":1,"Progressive House":1,"Trance":1,"Psytrance":1};
+function arr(name){var T=SOFT[name]?A2:A1,L=(LONG[name]&&!SOFT[name])?[16,16,32,16,32,16]:null;return T.map(function(a,j){return[a[0],L?L[j]:a[1],a[2],a[3]]})}
+var NT=[36,38,42,33],VEL=[100,100,80,90];
+function asc(s){return s.normalize("NFD").replace(/[\u0300-\u036f]/g,"")}
+function meta(ty,s){var b=[],i;s=asc(s);for(i=0;i<s.length;i++)b.push(s.charCodeAt(i)&127);return[255,ty].concat(vl(b.length),b)}
+function trk(ev,end){ev.sort(function(a,c){return a[0]-c[0]});var tr=[],last=0;ev.forEach(function(e){tr=tr.concat(vl(e[0]-last),e[1]);last=e[0]});tr=tr.concat(vl(Math.max(0,end-last)),[255,47,0]);var L=tr.length;return[77,84,114,107,(L>>24)&255,(L>>16)&255,(L>>8)&255,L&255].concat(tr)}
+function midiArr(st,AR,name){var T=[[],[],[],[]],tick=0,tm=[],mp=Math.round(6e7/st.bpm);
+tm.push([0,meta(3,name)],[0,[255,81,3,(mp>>16)&255,(mp>>8)&255,mp&255]],[0,[255,88,4,4,2,24,8]]);
+TN.forEach(function(n,k){T[k].push([0,meta(3,n)])});
+AR.forEach(function(a){tm.push([tick,meta(6,a[0])]);for(var b=0;b<a[1];b++){var roll=!!a[3]&&b===a[1]-1;
+for(var i=0;i<16;i++)for(var k=0;k<4;k++){var on=a[2][k]&&st.g[k][i];if(roll&&k===1)on=1;if(roll&&CUT[name]&&i>=8)on=0;
+if(on&&!st.m[k]){var t=tick+i*120+(i%2?Math.round(st.sw/100*40):0);T[k].push([t,[144|k,NT[k],VEL[k]]],[t+(k===3?100:50),[128|k,NT[k],0]])}}tick+=1920}});
+var out=[77,84,104,100,0,0,0,6,0,1,0,5,1,224].concat(trk(tm,tick));T.forEach(function(e){out=out.concat(trk(e,tick))});return new Uint8Array(out)}
+function expA(name,st,AR){dl().then(function(m){return m.save({filename:slug(name)+"-arrangement-"+st.bpm+"bpm.mid",data:new Blob([midiArr(st,AR,name)],{type:"audio/midi"})})})}
+function seq(box,name){var p=P[name].split("|");
+var st=S[name]||(S[name]={bpm:+p[4],g:[0,1,2,3].map(function(i){return p[i].split("").map(function(c){return c==="x"})})});
+box.innerHTML='<div class="ctl"><button class="pl">▶ Lecture</button><label>BPM <input class="bp" type="number" min="60" max="200"></label></div><div class="gr"></div><div class="hint">Clique sur les cases pour changer le rythme.</div>';
+var btn=box.querySelector('.pl'),bp=box.querySelector('.bp'),gr=box.querySelector('.gr'),cs=[];
+bp.value=st.bpm;bp.oninput=function(){var v=+bp.value;if(v>=60&&v<=200)st.bpm=v};
+TN.forEach(function(n,t){var r=document.createElement('div');r.className='tr';r.innerHTML='<span>'+n+'</span>';cs[t]=[];
+for(var i=0;i<16;i++)(function(i){var c=document.createElement('div');c.className='c'+(i%4===0?' b':'')+(st.g[t][i]?' a':'');
+c.onclick=function(){st.g[t][i]=!st.g[t][i];c.classList.toggle('a')};cs[t][i]=c;r.appendChild(c)})(i);gr.appendChild(r)});
+function mark(s){cs.forEach(function(row){row.forEach(function(c,i){c.classList.toggle('now',i===s)})})}
+btn.onclick=function(){if(cur&&cur.btn===btn){stop();return}stop();var c=actx(),step=0,next=c.currentTime+.05;
+btn.textContent="■ Stop";
+cur={btn:btn,mark:mark,iv:setInterval(function(){while(next<c.currentTime+.12){(function(s,t){for(var k=0;k<4;k++)if(st.g[k][s])hit(c,t,k);setTimeout(function(){if(cur&&cur.btn===btn)mark(s)},Math.max(0,(t-c.currentTime)*1000))})(step,next);step=(step+1)%16;next+=60/st.bpm/4}},25)}}}
+var SOFT={"Ambient":1,"Downtempo / Chillout":1,"Synthwave":1,"IDM":1},CUT={"Dubstep":1,"Drum and Bass":1,"EDM / Big Room":1,"Future Bass":1,"Hardstyle":1,"Electro House":1};
+var A1=[["Intro",8,[1,0,1,0]],["Montée",8,[1,1,1,0],1],["Drop",16,[1,1,1,1]],["Break",8,[0,0,1,1]],["Drop 2",16,[1,1,1,1]],["Outro",8,[1,0,1,0]]];
+var A2=[["Intro",8,[0,0,1,1]],["Thème",16,[1,1,1,1]],["Variation",16,[1,0,1,1]],["Retour",16,[1,1,1,1]],["Outro",8,[0,0,1,1]]];
+function stop(){if(cur){clearInterval(cur.iv);cur.btn.textContent=cur.lbl;cur.mark(-1,-1);cur=null}}
+function run(btn,lbl,mark,st,get){if(cur&&cur.btn===btn){stop();return}stop();var c=actx(),n=0,next=c.currentTime+.05;btn.textContent="■ Stop";
+cur={btn:btn,lbl:lbl,mark:mark,iv:setInterval(function(){while(next<c.currentTime+.12){var x=get(n);if(!x){stop();return}var sd=60/st.bpm/4,t=next+(x.s%2?st.sw/100*sd/3:0);
+(function(x,t){for(var k=0;k<4;k++)if(x.h[k]&&!st.m[k])hit(c,t,k);setTimeout(function(){if(cur&&cur.btn===btn)mark(x.s,x.sec)},Math.max(0,(t-c.currentTime)*1000))})(x,t);n++;next+=sd}},25)}}
+function vl(v){var b=[v&127];while(v>>=7)b.unshift((v&127)|128);return b}
+function midi(st){var ev=[],b,i,k,bars=4;
+for(b=0;b<bars;b++)for(i=0;i<16;i++)for(k=0;k<4;k++)if(st.g[k][i]&&!st.m[k]){var t=(b*16+i)*120+(i%2?Math.round(st.sw/100*40):0),ch=k===3?0:9,nt=[36,38,42,33][k];ev.push([t,0x90|ch,nt,k===3?90:100],[t+(k===3?100:50),0x80|ch,nt,0])}
+ev.sort(function(a,c){return a[0]-c[0]});
+var mp=Math.round(6e7/st.bpm),tr=[0,255,81,3,(mp>>16)&255,(mp>>8)&255,mp&255],last=0;
+ev.forEach(function(e){tr=tr.concat(vl(e[0]-last),[e[1],e[2],e[3]]);last=e[0]});
+tr=tr.concat(vl(Math.max(0,bars*1920-last)),[255,47,0]);
+var L=tr.length;return new Uint8Array([77,84,104,100,0,0,0,6,0,0,0,1,1,224,77,84,114,107,(L>>24)&255,(L>>16)&255,(L>>8)&255,L&255].concat(tr))}
+function dl(){return Promise.resolve({save:function(r){var a=document.createElement("a");a.href=URL.createObjectURL(r.data);a.download=r.filename;document.body.appendChild(a);a.click();a.remove();return Promise.resolve()}})}
+function slug(n){return n.replace(/[^a-z0-9]+/gi,"-").toLowerCase()}
+function exp(name,st){dl().then(function(m){return m.save({filename:slug(name)+"-"+st.bpm+"bpm.mid",data:new Blob([midi(st)],{type:"audio/midi"})})})}
+var LONG={"Techno":1,"Tech House":1,"Deep House":1,"Progressive House":1,"Trance":1,"Psytrance":1};
+function arr(name){var T=SOFT[name]?A2:A1,L=(LONG[name]&&!SOFT[name])?[16,16,32,16,32,16]:null;return T.map(function(a,j){return[a[0],L?L[j]:a[1],a[2],a[3]]})}
+var NT=[36,38,42,33],VEL=[100,100,80,90];
+function asc(s){return s.normalize("NFD").replace(/[\u0300-\u036f]/g,"")}
+function meta(ty,s){var b=[],i;s=asc(s);for(i=0;i<s.length;i++)b.push(s.charCodeAt(i)&127);return[255,ty].concat(vl(b.length),b)}
+function trk(ev,end){ev.sort(function(a,c){return a[0]-c[0]});var tr=[],last=0;ev.forEach(function(e){tr=tr.concat(vl(e[0]-last),e[1]);last=e[0]});tr=tr.concat(vl(Math.max(0,end-last)),[255,47,0]);var L=tr.length;return[77,84,114,107,(L>>24)&255,(L>>16)&255,(L>>8)&255,L&255].concat(tr)}
+function midiArr(st,AR,name){var T=[[],[],[],[]],tick=0,tm=[],mp=Math.round(6e7/st.bpm);
+tm.push([0,meta(3,name)],[0,[255,81,3,(mp>>16)&255,(mp>>8)&255,mp&255]],[0,[255,88,4,4,2,24,8]]);
+TN.forEach(function(n,k){T[k].push([0,meta(3,n)])});
+AR.forEach(function(a){tm.push([tick,meta(6,a[0])]);for(var b=0;b<a[1];b++){var roll=!!a[3]&&b===a[1]-1;
+for(var i=0;i<16;i++)for(var k=0;k<4;k++){var on=a[2][k]&&st.g[k][i];if(roll&&k===1)on=1;if(roll&&CUT[name]&&i>=8)on=0;
+if(on&&!st.m[k]){var t=tick+i*120+(i%2?Math.round(st.sw/100*40):0);T[k].push([t,[144|k,NT[k],VEL[k]]],[t+(k===3?100:50),[128|k,NT[k],0]])}}tick+=1920}});
+var out=[77,84,104,100,0,0,0,6,0,1,0,5,1,224].concat(trk(tm,tick));T.forEach(function(e){out=out.concat(trk(e,tick))});return new Uint8Array(out)}
+function expA(name,st,AR){dl().then(function(m){if(!m)return;var z=new JSZip(),fn=name.replace(/[^a-z0-9]+/gi,"-").toLowerCase();z.file(fn+"-arrangement.mid",midiArr(st,AR,name));return z.generateAsync({type:"blob"}).then(function(bl){return m.save({filename:fn+"-arrangement-"+st.bpm+"bpm.zip",data:bl})})}).catch(function(e){if(!e||e.code!=="declined")alert("Export impossible.")})}
+function seq(box,name){var p=P[name].split("|"),AR=arr(name);
+var st=S[name]||(S[name]={bpm:+p[4],sw:0,m:[0,0,0,0],g:[0,1,2,3].map(function(i){return p[i].split("").map(function(c){return c==="x"})})});
+box.innerHTML='<div class="ctl"><button class="pl">▶ Lecture</button><label>BPM <input class="bp" type="number" min="60" max="200"></label><label>Swing <input class="sw" type="range" min="0" max="100"></label><button class="ex">⬇ MIDI</button></div><div class="gr"></div><div class="hint">Clique sur les cases pour changer le rythme, et sur le nom d’une piste pour la couper.</div><div class="ah"></div><div class="ar"></div><div class="ctl"><button class="pa">▶ Lire la structure</button><button class="ea">⬇ MIDI arrangement</button></div><div class="hint h2"></div>';
+var bp=box.querySelector('.bp'),sw=box.querySelector('.sw'),gr=box.querySelector('.gr'),ar=box.querySelector('.ar'),pl=box.querySelector('.pl'),pa=box.querySelector('.pa'),ex=box.querySelector('.ex'),cs=[],hs=[],as=[];
+box.querySelector('.ah').textContent=SOFT[name]?"Structure du morceau (pas de vrai drop)":"Agencement du drop";
+box.querySelector('.h2').textContent="Chiffre = nombre de mesures réelles. À l’écoute, la structure est condensée (÷4).";
+bp.value=st.bpm;bp.oninput=function(){var v=+bp.value;if(v>=60&&v<=200)st.bpm=v};
+sw.value=st.sw;sw.oninput=function(){st.sw=+sw.value};
+dl().then(function(m){if(!m)ex.style.display="none"});
+TN.forEach(function(n,t){var r=document.createElement('div');r.className='tr';var sp=document.createElement('span');sp.className='mu'+(st.m[t]?' off':'');sp.textContent=n;sp.onclick=function(){st.m[t]=st.m[t]?0:1;sp.classList.toggle('off')};r.appendChild(sp);cs[t]=[];
+for(var i=0;i<16;i++)(function(i){var c=document.createElement('div');c.className='c'+(i%4===0?' b':'')+(st.g[t][i]?' a':'');c.onclick=function(){st.g[t][i]=!st.g[t][i];c.classList.toggle('a')};cs[t][i]=c;r.appendChild(c)})(i);gr.appendChild(r)});
+ar.style.gridTemplateColumns="54px "+AR.map(function(a){return a[1]+"fr"}).join(" ");
+ar.appendChild(document.createElement('span'));
+AR.forEach(function(a,j){var h=document.createElement('div');h.className='h';h.textContent=a[0]+" "+a[1];h.title=a[0]+" : "+a[1]+" mesures";hs[j]=h;ar.appendChild(h)});
+TN.forEach(function(n,t){var l=document.createElement('span');l.textContent=n;l.style.cssText="font-size:.75rem;color:var(--mut)";ar.appendChild(l);
+AR.forEach(function(a,j){var c=document.createElement('div');c.className='c'+(a[2][t]?' a':'');c.dataset.j=j;as.push(c);ar.appendChild(c)})});
+function mark(s,sec){cs.forEach(function(row){row.forEach(function(c,i){c.classList.toggle('now',i===s)})});hs.forEach(function(h,j){h.classList.toggle('cur',j===sec)});as.forEach(function(c){c.classList.toggle('cur',+c.dataset.j===sec)})}
+pl.onclick=function(){run(pl,"▶ Lecture",mark,st,function(n){var s=n%16;return{h:[0,1,2,3].map(function(k){return st.g[k][s]}),s:s,sec:-1}})};
+var bars=[];AR.forEach(function(a,j){var q2=Math.max(1,Math.round(a[1]/4));for(var b=0;b<q2;b++)bars.push({j:j,m:a[2],roll:!!a[3]&&b===q2-1})});
+pa.onclick=function(){run(pa,"▶ Lire la structure",mark,st,function(n){var b=Math.floor(n/16),s=n%16;if(b>=bars.length)return null;var o=bars[b],h=[0,1,2,3].map(function(k){return o.m[k]&&st.g[k][s]});if(o.roll){h[1]=1;if(CUT[name]&&s>=8)h=[0,0,0,0]}return{h:h,s:s,sec:o.j}})};
+ex.onclick=function(){exp(name,st)};var ea=box.querySelector('.ea');ea.onclick=function(){expA(name,st,AR)};dl().then(function(m){if(!m)ea.style.display="none"})}
+q.oninput=render;s.onchange=render;render();
+</script>
+<script>if("serviceWorker" in navigator)window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js")})</script>
+</body>
+</html>
