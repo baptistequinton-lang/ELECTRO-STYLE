@@ -147,50 +147,6 @@ for(var i=0;i<16;i++)for(var k=0;k<4;k++){var on=a[2][k]&&st.g[k][i];if(roll&&k=
 if(on&&!st.m[k]){var t=tick+i*120+(i%2?Math.round(st.sw/100*40):0);T[k].push([t,[144|k,NT[k],VEL[k]]],[t+(k===3?100:50),[128|k,NT[k],0]])}}tick+=1920}});
 var out=[77,84,104,100,0,0,0,6,0,1,0,5,1,224].concat(trk(tm,tick));T.forEach(function(e){out=out.concat(trk(e,tick))});return new Uint8Array(out)}
 function expA(name,st,AR){dl().then(function(m){return m.save({filename:slug(name)+"-arrangement-"+st.bpm+"bpm.mid",data:new Blob([midiArr(st,AR,name)],{type:"audio/midi"})})})}
-function seq(box,name){var p=P[name].split("|");
-var st=S[name]||(S[name]={bpm:+p[4],g:[0,1,2,3].map(function(i){return p[i].split("").map(function(c){return c==="x"})})});
-box.innerHTML='<div class="ctl"><button class="pl">▶ Lecture</button><label>BPM <input class="bp" type="number" min="60" max="200"></label></div><div class="gr"></div><div class="hint">Clique sur les cases pour changer le rythme.</div>';
-var btn=box.querySelector('.pl'),bp=box.querySelector('.bp'),gr=box.querySelector('.gr'),cs=[];
-bp.value=st.bpm;bp.oninput=function(){var v=+bp.value;if(v>=60&&v<=200)st.bpm=v};
-TN.forEach(function(n,t){var r=document.createElement('div');r.className='tr';r.innerHTML='<span>'+n+'</span>';cs[t]=[];
-for(var i=0;i<16;i++)(function(i){var c=document.createElement('div');c.className='c'+(i%4===0?' b':'')+(st.g[t][i]?' a':'');
-c.onclick=function(){st.g[t][i]=!st.g[t][i];c.classList.toggle('a')};cs[t][i]=c;r.appendChild(c)})(i);gr.appendChild(r)});
-function mark(s){cs.forEach(function(row){row.forEach(function(c,i){c.classList.toggle('now',i===s)})})}
-btn.onclick=function(){if(cur&&cur.btn===btn){stop();return}stop();var c=actx(),step=0,next=c.currentTime+.05;
-btn.textContent="■ Stop";
-cur={btn:btn,mark:mark,iv:setInterval(function(){while(next<c.currentTime+.12){(function(s,t){for(var k=0;k<4;k++)if(st.g[k][s])hit(c,t,k);setTimeout(function(){if(cur&&cur.btn===btn)mark(s)},Math.max(0,(t-c.currentTime)*1000))})(step,next);step=(step+1)%16;next+=60/st.bpm/4}},25)}}}
-var SOFT={"Ambient":1,"Downtempo / Chillout":1,"Synthwave":1,"IDM":1},CUT={"Dubstep":1,"Drum and Bass":1,"EDM / Big Room":1,"Future Bass":1,"Hardstyle":1,"Electro House":1};
-var A1=[["Intro",8,[1,0,1,0]],["Montée",8,[1,1,1,0],1],["Drop",16,[1,1,1,1]],["Break",8,[0,0,1,1]],["Drop 2",16,[1,1,1,1]],["Outro",8,[1,0,1,0]]];
-var A2=[["Intro",8,[0,0,1,1]],["Thème",16,[1,1,1,1]],["Variation",16,[1,0,1,1]],["Retour",16,[1,1,1,1]],["Outro",8,[0,0,1,1]]];
-function stop(){if(cur){clearInterval(cur.iv);cur.btn.textContent=cur.lbl;cur.mark(-1,-1);cur=null}}
-function run(btn,lbl,mark,st,get){if(cur&&cur.btn===btn){stop();return}stop();var c=actx(),n=0,next=c.currentTime+.05;btn.textContent="■ Stop";
-cur={btn:btn,lbl:lbl,mark:mark,iv:setInterval(function(){while(next<c.currentTime+.12){var x=get(n);if(!x){stop();return}var sd=60/st.bpm/4,t=next+(x.s%2?st.sw/100*sd/3:0);
-(function(x,t){for(var k=0;k<4;k++)if(x.h[k]&&!st.m[k])hit(c,t,k);setTimeout(function(){if(cur&&cur.btn===btn)mark(x.s,x.sec)},Math.max(0,(t-c.currentTime)*1000))})(x,t);n++;next+=sd}},25)}}
-function vl(v){var b=[v&127];while(v>>=7)b.unshift((v&127)|128);return b}
-function midi(st){var ev=[],b,i,k,bars=4;
-for(b=0;b<bars;b++)for(i=0;i<16;i++)for(k=0;k<4;k++)if(st.g[k][i]&&!st.m[k]){var t=(b*16+i)*120+(i%2?Math.round(st.sw/100*40):0),ch=k===3?0:9,nt=[36,38,42,33][k];ev.push([t,0x90|ch,nt,k===3?90:100],[t+(k===3?100:50),0x80|ch,nt,0])}
-ev.sort(function(a,c){return a[0]-c[0]});
-var mp=Math.round(6e7/st.bpm),tr=[0,255,81,3,(mp>>16)&255,(mp>>8)&255,mp&255],last=0;
-ev.forEach(function(e){tr=tr.concat(vl(e[0]-last),[e[1],e[2],e[3]]);last=e[0]});
-tr=tr.concat(vl(Math.max(0,bars*1920-last)),[255,47,0]);
-var L=tr.length;return new Uint8Array([77,84,104,100,0,0,0,6,0,0,0,1,1,224,77,84,114,107,(L>>24)&255,(L>>16)&255,(L>>8)&255,L&255].concat(tr))}
-function dl(){return Promise.resolve({save:function(r){var a=document.createElement("a");a.href=URL.createObjectURL(r.data);a.download=r.filename;document.body.appendChild(a);a.click();a.remove();return Promise.resolve()}})}
-function slug(n){return n.replace(/[^a-z0-9]+/gi,"-").toLowerCase()}
-function exp(name,st){dl().then(function(m){return m.save({filename:slug(name)+"-"+st.bpm+"bpm.mid",data:new Blob([midi(st)],{type:"audio/midi"})})})}
-var LONG={"Techno":1,"Tech House":1,"Deep House":1,"Progressive House":1,"Trance":1,"Psytrance":1};
-function arr(name){var T=SOFT[name]?A2:A1,L=(LONG[name]&&!SOFT[name])?[16,16,32,16,32,16]:null;return T.map(function(a,j){return[a[0],L?L[j]:a[1],a[2],a[3]]})}
-var NT=[36,38,42,33],VEL=[100,100,80,90];
-function asc(s){return s.normalize("NFD").replace(/[\u0300-\u036f]/g,"")}
-function meta(ty,s){var b=[],i;s=asc(s);for(i=0;i<s.length;i++)b.push(s.charCodeAt(i)&127);return[255,ty].concat(vl(b.length),b)}
-function trk(ev,end){ev.sort(function(a,c){return a[0]-c[0]});var tr=[],last=0;ev.forEach(function(e){tr=tr.concat(vl(e[0]-last),e[1]);last=e[0]});tr=tr.concat(vl(Math.max(0,end-last)),[255,47,0]);var L=tr.length;return[77,84,114,107,(L>>24)&255,(L>>16)&255,(L>>8)&255,L&255].concat(tr)}
-function midiArr(st,AR,name){var T=[[],[],[],[]],tick=0,tm=[],mp=Math.round(6e7/st.bpm);
-tm.push([0,meta(3,name)],[0,[255,81,3,(mp>>16)&255,(mp>>8)&255,mp&255]],[0,[255,88,4,4,2,24,8]]);
-TN.forEach(function(n,k){T[k].push([0,meta(3,n)])});
-AR.forEach(function(a){tm.push([tick,meta(6,a[0])]);for(var b=0;b<a[1];b++){var roll=!!a[3]&&b===a[1]-1;
-for(var i=0;i<16;i++)for(var k=0;k<4;k++){var on=a[2][k]&&st.g[k][i];if(roll&&k===1)on=1;if(roll&&CUT[name]&&i>=8)on=0;
-if(on&&!st.m[k]){var t=tick+i*120+(i%2?Math.round(st.sw/100*40):0);T[k].push([t,[144|k,NT[k],VEL[k]]],[t+(k===3?100:50),[128|k,NT[k],0]])}}tick+=1920}});
-var out=[77,84,104,100,0,0,0,6,0,1,0,5,1,224].concat(trk(tm,tick));T.forEach(function(e){out=out.concat(trk(e,tick))});return new Uint8Array(out)}
-function expA(name,st,AR){dl().then(function(m){if(!m)return;var z=new JSZip(),fn=name.replace(/[^a-z0-9]+/gi,"-").toLowerCase();z.file(fn+"-arrangement.mid",midiArr(st,AR,name));return z.generateAsync({type:"blob"}).then(function(bl){return m.save({filename:fn+"-arrangement-"+st.bpm+"bpm.zip",data:bl})})}).catch(function(e){if(!e||e.code!=="declined")alert("Export impossible.")})}
 function seq(box,name){var p=P[name].split("|"),AR=arr(name);
 var st=S[name]||(S[name]={bpm:+p[4],sw:0,m:[0,0,0,0],g:[0,1,2,3].map(function(i){return p[i].split("").map(function(c){return c==="x"})})});
 box.innerHTML='<div class="ctl"><button class="pl">▶ Lecture</button><label>BPM <input class="bp" type="number" min="60" max="200"></label><label>Swing <input class="sw" type="range" min="0" max="100"></label><button class="ex">⬇ MIDI</button></div><div class="gr"></div><div class="hint">Clique sur les cases pour changer le rythme, et sur le nom d’une piste pour la couper.</div><div class="ah"></div><div class="ar"></div><div class="ctl"><button class="pa">▶ Lire la structure</button><button class="ea">⬇ MIDI arrangement</button></div><div class="hint h2"></div>';
